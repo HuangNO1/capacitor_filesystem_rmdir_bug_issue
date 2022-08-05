@@ -1,0 +1,7 @@
+{
+  "name": "cap_filesystem_bug",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
