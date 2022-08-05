@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { DataService, Message } from '../services/data.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ListService } from '../services/list/list.service';
 
 @Component({
   selector: 'app-home',
@@ -7,16 +8,34 @@ import { DataService, Message } from '../services/data.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  constructor(private data: DataService) {}
+  Photo: any[] = [];
 
-  refresh(ev) {
-    setTimeout(() => {
-      ev.detail.complete();
-    }, 3000);
+  constructor(private listService: ListService) {}
+
+  async selectImage() {
+    const img = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Camera,
+    });
+
+    console.log(img);
+    if (img) {
+      const saved = await this.listService.saveImage(img);
+      console.log('saved: ', saved);
+
+      this.Photo.push(saved);
+    }
   }
 
-  getMessages(): Message[] {
-    return this.data.getMessages();
+  async deleteImage(index) {
+    this.listService.deleteImage(this.Photo[index]);
+    this.Photo.splice(index, 1);
   }
 
+  async clear() {
+    await this.listService.removeAll();
+    this.Photo = [];
+  }
 }

@@ -5,15 +5,18 @@ import { FormsModule } from '@angular/forms';
 
 import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
-import { MessageComponentModule } from '../message/message.module';
+import { ButtonModule } from 'primeng/button';
+import { ImageModule } from 'primeng/image';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MessageComponentModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    ButtonModule,
+    ImageModule
   ],
   declarations: [HomePage]
 })
