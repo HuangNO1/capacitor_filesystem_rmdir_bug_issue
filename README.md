@@ -4,6 +4,20 @@
 
 env: archlinux, angular
 
+## Using
+
+### Project setup
+
+```
+npm install
+```
+
+### Compiles
+
+```
+ionic serve
+```
+
 ## Capacitor Version
 <!--
 Paste the output from the `npx cap doctor` command into the code block below. This will provide the versions of Capacitor packages and related dependencies.
