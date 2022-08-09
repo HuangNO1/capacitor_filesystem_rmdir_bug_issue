@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import {
-  Photo,
-} from '@capacitor/camera';
+import { Photo } from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { App } from '@capacitor/app';
 
@@ -14,34 +12,29 @@ const IMAGE_DIR = 'stored-images';
 export class ListService {
   private platform: Platform;
 
-  constructor(
-    platform: Platform,
-  ) {
+  constructor(platform: Platform) {
     this.platform = platform;
   }
 
-
   async removeAll() {
-    // 刪除圖片保存資料夾
-    try {
-      await Filesystem.rmdir({
-        directory: Directory.Documents,
-        path: IMAGE_DIR,
-        recursive: true,
-      });
-    } catch (err) {
-      console.log('rmdir error: ', err);
-    }
+    const dir = await Filesystem.readdir({
+      directory: Directory.Documents,
+      path: IMAGE_DIR,
+    });
 
-    // 初始化資料夾
-    try {
-      await Filesystem.mkdir({
-        directory: Directory.Documents,
-        path: IMAGE_DIR,
-      });
-    } catch(err) {
-      console.log('mkdir err: ', err)
+    console.log('read dir: ', dir);
+
+    for (let f of dir.files) {
+      try {
+        await Filesystem.deleteFile({
+          path: f.uri,
+        });
+      } catch (err) {
+        console.log(err);
+        return false;
+      }
     }
+    return true;
   }
 
   async saveImage(photo: Photo) {
